@@ -1,18 +1,20 @@
 # Description
-#   A hubot script to search for velibs bikes in Paris
+#   A hubot script to obtain Paris transport times of RATP group.
 #
 # Configuration:
-#   HUBOT_GOOGLE_API_KEY - Google API to search the coordinates of the place
+#   HUBOT_RATP_WSDL - Wsdl for soap request
 #
 # Commands:
-#   hubot velibs in <place> - Returns the numbers 
+#   hubot ratp line <ligne> <station> <sens (A|R)> - Returns line information
+#   hubot ratp next <ligne> <station> <sens (A|R)> - Returns next time for a station
 #
 # Author:
 #   cristianpb
 
 soap = require('soap')
 moment = require('moment')
-url = '/Users/cperez/Downloads/ratp-wsiv-opendata/Wsiv.wsdl'
+url = process.env.HUBOT_RATP_WSDL
+date_format = 'YYYYMMDDhh:mm'
 client = null
 
 soap.createClient( url, (err, cl) ->
@@ -24,7 +26,6 @@ soap.createClient( url, (err, cl) ->
 )
 
 module.exports = (robot) ->
-  # your code here
   robot.respond /ratp line (.+) (.+) (.+)/i, (msg) ->
     ligne   = msg.match[1].toUpperCase( )
     station = msg.match[2]
@@ -45,7 +46,7 @@ module.exports = (robot) ->
   robot.respond /ratp next (.+) (.+) (.+)/i, (msg) ->
     ligne   = msg.match[1].toUpperCase( )
     station = msg.match[2]
-    sens    = msg.match[3].toUpperCase( )
+    sens    = msg.match[3] || 'R'
     msg.send "ligne #{ligne} sta #{station} and sens #{sens}"
 
     args = 
@@ -67,10 +68,8 @@ module.exports = (robot) ->
         perturbations = JSON.stringify(described['perturbations'], 'zero', '\t')
         mymsg = 'There are ' + perturbations + ' perturbations\n'
         for value in described['missions']
+          mymsg += "Direction #{value['direction']['name']} "
           mymsg += "next in #{value['stationsMessages']} "
-          console.log value['stationsDates'].toDateString()
-          mydate = new Date(value['stationsDates'])
-          mydate = mydate.toDateString()
+          mydate = moment(value['stationsDates'].toString(), date_format).format("H:mm")
           mymsg += "at #{mydate} \n"
-
         msg.send mymsg

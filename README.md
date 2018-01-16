@@ -1,6 +1,8 @@
 # hubot-ratp
 
-A hubot script to search for RATP informations in real time. Paris Transport.
+A hubot script to search for RATP informations in real time. 
+
+Using ratp [API](https://dataratp2.opendatasoft.com/page/temps-reel/).
 
 See [`src/ratp.coffee`](src/ratp.coffee) for full documentation.
 
