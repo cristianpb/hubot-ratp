@@ -23,8 +23,13 @@ Then add **hubot-ratp** to your `external-scripts.json`:
 ## Sample Interaction
 
 ```
-user1>> ratp in Monparnasse
-hubot>> There
+user1>>  myhubot ratp next m6 nation R
+hubot>> ligne M6 station nation sens R
+There are undefined perturbations
+Direction Nation next in 3 mn at 23:21
+Direction Nation next in 5 mn at 23:23
+Direction Nation next in 11 mn at 23:29
+Direction Nation next in 16 mn at 23:34
 ```
 
 ## NPM Module

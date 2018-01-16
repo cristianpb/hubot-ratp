@@ -30,7 +30,7 @@ module.exports = (robot) ->
     ligne   = msg.match[1].toUpperCase( )
     station = msg.match[2]
     sens    = msg.match[3].toUpperCase( )
-    msg.send "ligne #{ligne} sta #{station} and sens #{sens}"
+    msg.send "ligne #{ligne} station #{station} sens #{sens}"
 
     args = line: 'id': ligne
     client.getLines args, (err, result) ->
