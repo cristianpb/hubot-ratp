@@ -1,7 +1,6 @@
 {
   "name": "hubot-ratp",
   "description": "A hubot script to search for RATP informations in real time. Paris Transport.",
-  "version": "0.0.1",
   "author": "cristianpb",
   "license": "MIT",
   "keywords": "hubot, hubot-scripts",
