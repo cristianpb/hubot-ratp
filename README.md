@@ -4,6 +4,8 @@ A hubot script to search for RATP informations in real time.
 
 Using ratp [API](https://dataratp2.opendatasoft.com/page/temps-reel/).
 
+Please note that you must validate your IP with the service in order to use the API.
+
 See [`src/ratp.coffee`](src/ratp.coffee) for full documentation.
 
 ## Installation

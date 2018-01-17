@@ -5,8 +5,8 @@
 #   HUBOT_RATP_WSDL - Wsdl for soap request
 #
 # Commands:
-#   hubot ratp line <ligne> <station> <sens (A|R)> - Returns line information
-#   hubot ratp next <ligne> <station> <sens (A|R)> - Returns next time for a station
+#   hubot ratp stations <ligne> - Returns stations for a line
+#   hubot <sens (A|R)> ratp next <ligne> <station> - Returns next transport times for a station
 #
 # Author:
 #   cristianpb
@@ -25,51 +25,71 @@ soap.createClient( url, (err, cl) ->
     client = cl
 )
 
+
+findNext = (args, msg) ->
+  client.getMissionsNext args, (err, result) ->
+    if err
+      throw err
+    else
+      described = result.return
+      mymsg = ''
+      if described['perturbations']
+        perturbations = JSON.stringify(described['perturbations'], 'zero', '\t')
+        mymsg = 'There are ' + perturbations + ' perturbations\n'
+      for value in described['missions']
+        if value['perturbations']
+          perturbations = JSON.stringify(value['perturbations'], 'zero', '\t')
+          mymsg += "Perturbations #{perturbations} "
+        mymsg += "Direction #{value['direction']['name']} "
+        mymsg += "next in #{value['stationsMessages']} "
+        mydate = moment(value['stationsDates'].toString(), date_format).format("H:mm")
+        mymsg += "at #{mydate} \n"
+      msg.send mymsg
+
 module.exports = (robot) ->
-  robot.respond /ratp line (.+) (.+) (.+)/i, (msg) ->
+
+  # Get station of a line
+
+  robot.respond /ratp stations (.+)/i, (msg) ->
     ligne   = msg.match[1].toUpperCase( )
-    station = msg.match[2]
-    sens    = msg.match[3].toUpperCase( )
-    msg.send "ligne #{ligne} station #{station} sens #{sens}"
-
-    args = line: 'id': ligne
-    client.getLines args, (err, result) ->
-      if err
-        throw err
-      else
-        described = result.return
-        described = JSON.stringify(described, null, '\t')
-        msg.reply "Result #{described}"
-
-  # Get next train
-
-  robot.respond /ratp next (.+) (.+) (.+)/i, (msg) ->
-    ligne   = msg.match[1].toUpperCase( )
-    station = msg.match[2]
-    sens    = msg.match[3] || 'R'
-    msg.send "ligne #{ligne} sta #{station} and sens #{sens}"
+    msg.send "ligne #{ligne}"
 
     args = 
       station:
         line:
           id:
             ligne
-        name:
-          station
-      direction:
-        sens:
-          sens
 
-    client.getMissionsNext args, (err, result) ->
+    client.getStations args, (err, result) ->
       if err
         throw err
       else
         described = result.return
-        perturbations = JSON.stringify(described['perturbations'], 'zero', '\t')
-        mymsg = 'There are ' + perturbations + ' perturbations\n'
-        for value in described['missions']
-          mymsg += "Direction #{value['direction']['name']} "
-          mymsg += "next in #{value['stationsMessages']} "
-          mydate = moment(value['stationsDates'].toString(), date_format).format("H:mm")
-          mymsg += "at #{mydate} \n"
-        msg.send mymsg
+        mymsg = ''
+        for value in described['stations']
+            mymsg += "#{value['name']}\n"
+
+        msg.reply mymsg
+
+  # Get next transport time
+
+  robot.respond /((R|A) )?ratp next ([a-z])([0-9]*) (.+)/i, (msg) ->
+    sens    = msg.match[2] || 'RA'
+    sens    = sens.split('')
+    ligne   = msg.match[3].toUpperCase( ) + msg.match[4]
+    station = msg.match[5]
+    msg.send "Ligne #{ligne} Station #{station} and Sens #{sens}"
+
+    for value in sens
+      args = 
+        station:
+          line:
+            id:
+              ligne
+          name:
+            station
+        direction:
+          sens:
+            value
+
+      findNext(args, msg)
