@@ -1,5 +1,7 @@
 # hubot-ratp
 
+[![npm version](https://badge.fury.io/js/hubot-ratp.svg)](https://badge.fury.io/js/hubot-ratp) [![Build Status](https://travis-ci.org/cristianpb/hubot-ratp.svg?branch=master)](https://travis-ci.org/cristianpb/hubot-ratp)
+
 A hubot script to search for RATP informations in real time. 
 
 Using ratp [API](https://dataratp2.opendatasoft.com/page/temps-reel/).
