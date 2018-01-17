@@ -6,5 +6,6 @@ before_install:
 deploy:
   provider: npm
   api_key: $NPM_TOKEN
+  mail: cristian_brokate@hotmail.com
   on:
     tags: true
