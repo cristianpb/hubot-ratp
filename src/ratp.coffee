@@ -5,8 +5,9 @@
 #   HUBOT_RATP_WSDL - Wsdl for soap request
 #
 # Commands:
-#   hubot ratp stations <ligne> - Returns stations for a line
-#   hubot <sens (A|R)> ratp next <ligne> <station> - Returns next transport times for a station
+#   hubot ratp stations <line> - Returns stations for a line
+#   hubot ratp next <line> <station> - Returns next transport times for a 
+#   station
 #
 # Author:
 #   cristianpb
