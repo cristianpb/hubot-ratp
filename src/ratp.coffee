@@ -73,11 +73,11 @@ module.exports = (robot) ->
 
   # Get next transport time
 
-  robot.respond /((R|A) )?ratp next ([a-z])([0-9]*) (.+)/i, (msg) ->
+  robot.respond /((R|A) )?ratp next (.+) (.+)/i, (msg) ->
     sens    = msg.match[2] || 'RA'
     sens    = sens.split('')
-    ligne   = msg.match[3].toUpperCase( ) + msg.match[4]
-    station = msg.match[5]
+    ligne   = msg.match[3].toUpperCase( )
+    station = msg.match[4]
     msg.send "Ligne #{ligne} Station #{station} and Sens #{sens}"
 
     for value in sens

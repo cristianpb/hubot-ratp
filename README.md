@@ -27,13 +27,29 @@ Then add **hubot-ratp** to your `external-scripts.json`:
 ## Sample Interaction
 
 ```
-user1>>  myhubot ratp next m6 nation R
-hubot>> ligne M6 station nation sens R
-There are undefined perturbations
-Direction Nation next in 3 mn at 23:21
-Direction Nation next in 5 mn at 23:23
-Direction Nation next in 11 mn at 23:29
-Direction Nation next in 16 mn at 23:34
+user>> myhubot ratp stations m14
+myhubot> ligne M14
+Olympiades
+Biblioth_que Fran_ois Mitterrand
+Cour Saint-Emilion
+Bercy
+Gare de Lyon
+Ch_telet
+Pyramides
+Madeleine
+Saint-Lazare
+
+myhubot> myhubot ratp next m4 raspail
+myhubot> Ligne M4 Station raspail and Sens R,A
+Direction Porte de Clignancourt next in Train a l'approche at 11:01
+Direction Porte de Clignancourt next in 2 mn at 11:03
+Direction Porte de Clignancourt next in 3 mn at 11:04
+Direction Porte de Clignancourt next in 5 mn at 11:06
+
+Direction Mairie de Montrouge next in Train a l'approche at 11:01
+Direction Mairie de Montrouge next in 2 mn at 11:03
+Direction Mairie de Montrouge next in 6 mn at 11:07
+Direction Mairie de Montrouge next in 8 mn at 11:09
 ```
 
 ## NPM Module
