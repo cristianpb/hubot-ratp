@@ -74,7 +74,7 @@ module.exports = (robot) ->
 
   # Get next transport time
 
-  robot.respond /((R|A) )?ratp next (.+) (.+)/i, (msg) ->
+  robot.respond /((R|A) )?ratp next (\w+) (.+)/i, (msg) ->
     sens    = msg.match[2] || 'RA'
     sens    = sens.split('')
     ligne   = msg.match[3].toUpperCase( )
