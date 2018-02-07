@@ -6,7 +6,7 @@
 #
 # Commands:
 #   hubot ratp stations <line> - Returns stations for a line
-#   hubot ratp next <line> <station> - Returns next transport times for a 
+#   hubot ratp next <line> <station> - Returns next transport times for a
 #   station
 #
 # Author:
@@ -34,9 +34,10 @@ findNext = (args, msg) ->
     else
       described = result.return
       mymsg = ''
+      console.log "#{described['perturbations']}"
       if described['perturbations']
-        perturbations = JSON.stringify(described['perturbations'], 'zero', '\t')
-        mymsg = 'There are ' + perturbations + ' perturbations\n'
+        for perturbation in described['perturbations']
+          mymsg += "#{perturbation["message"]["text"]} \n"
       for value in described['missions']
         if value['perturbations']
           perturbations = JSON.stringify(value['perturbations'], 'zero', '\t')
@@ -55,7 +56,7 @@ module.exports = (robot) ->
     ligne   = msg.match[1].toUpperCase( )
     msg.send "ligne #{ligne}"
 
-    args = 
+    args =
       station:
         line:
           id:
@@ -82,7 +83,7 @@ module.exports = (robot) ->
     msg.send "Ligne #{ligne} Station #{station} and Sens #{sens}"
 
     for value in sens
-      args = 
+      args =
         station:
           line:
             id:
